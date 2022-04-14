@@ -1,0 +1,102 @@
+<h1>Posts</h1>
+<br>
+    <div class="card">
+        <div class="card-header">
+          <p style="color:blue;"><%= @postowner.user_name %></p>
+        </div>
+          <div class="card-body">
+            <blockquote class="blockquote mb-0">
+            <p><%= @post.post_content %></p>
+            <footer class="blockquote-footer">Post at 5/4/2022 <cite title="Source Title"></cite></footer>
+            </blockquote>
+
+            <%= @post.likes.count %> Likes
+
+            <% like = Like.find_by(likeable: @post, user:@userid) %>
+              <% if like.nil? %>
+                <%= form_with url: post_likes_path(@post,@like), method: :post do |form| %>
+                  <%= form.hidden_field :likeable_id, value: @post.id %>
+                  <%= form.hidden_field :likeable_type, value: "Post" %>
+                  <%= form.hidden_field :user_id, value: @userid %>          
+                  <%= form.submit "Like", class:"btn btn-primary" %>
+                <% end %>
+   
+              <% else %>            
+                <% @like = Like.find_by(likeable: @post, user:@userid) %>
+                <%= form_with url: post_like_path(@post,@like), method: :delete do |form| %>
+                  <%= form.hidden_field :likeable_id, value: @like.id %>
+                  <%= form.hidden_field :user_id, value: @userid %>
+                  <%= form.button "Unlike", class:"btn btn-primary" ,formmethod: :delete, data: { confirm: "Are you sure?" } %>
+                <% end %>
+              <% end %>
+
+          </div>
+      </div>
+<br>
+
+    <div class="card">
+      <div class="card-header">
+        <p style="color:blue;">Reply:</p>
+      </div>
+
+      <div class="card-body">
+        <blockquote class="blockquote mb-0">
+      <div class="container-fluid">
+      <% @comments.each do |comment| %>
+        <%= turbo_stream_from "new" %>
+        <%= turbo_frame_tag dom_id(comment) do %>
+
+            <div class="card">  <%= comment.user_name %> :
+              <div center = "center">
+                <div class="float-right">
+
+                 </div>
+      
+                   <div class="card-body mb-2">
+                    <div class="d-flex justify-content-between">
+                      -<%= comment.comment_content %>
+                      <%= link_to "Edit this comment", edit_user_post_comment_path(comment.user_id,comment.post_id,comment) %>          
+                          <div class="d-flex justify-content-between">
+                            <%= button_to "Destroy this comment", comment, method: :delete, class:"btn btn-danger" %>          
+                          </div>
+                    </div>
+                    
+            <%= comment.likes.count %> Likes
+            <% like = Like.find_by(likeable: comment, user:@userid) %>
+              <% if like.nil? %>
+                <%= form_with url: comment_likes_path(comment.id,like), method: :comment do |form| %>
+                  <%= form.hidden_field :likeable_id, value: comment.id %>
+                  <%= form.hidden_field :likeable_type, value: "Comment" %>
+                  <%= form.hidden_field :user_id, value: @userid %>          
+                  <%= form.submit "Like", class:"btn btn-primary" %>
+                <% end %>
+
+              <% else %>            
+                  <%= form_with url: comment_like_path(comment.id,like), method: :delete do |form| %>
+                    <%= form.hidden_field :likeable_id, value: like.id %>
+                    <%= form.hidden_field :user_id, value: @userid %>
+                    <%= form.button "Unlike", class:"btn btn-primary" ,formmethod: :delete, data: { confirm: "Are you sure?" } %>
+                  <% end %>
+              <% end %>
+
+                  </div>
+    </div>
+        <% end %>    
+
+ 
+
+  </div>
+<% end %>
+</div>
+</div>
+<br>
+<%= render "form", comment: @comment %><br>
+<%= link_to '<button type="button" class="btn btn-primary">Back to Post</button>'.html_safe , user_posts_path(@userid) %>
+
+</div>
+<br>
+
+
+<br>
+
+

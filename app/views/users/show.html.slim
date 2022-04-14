@@ -1,0 +1,24 @@
+p style="color: green"
+    = notice 
+
+div class="card w-50"
+    h5 class="card-header"
+        | Account Detail
+    div class="card-body"
+        h5 class="card-title"
+        | Name: 
+        = @user.user_name
+            p class="card-text"
+                | User ID: 
+                = @user.id
+  
+br
+= link_to 'Edit', edit_user_path(@user), class: "btn btn-primary"
+'
+= link_to 'Back', users_path, class: "btn btn-primary"
+'
+= link_to 'View Post', user_posts_path(@user.id), class: "btn btn-primary"
+br
+
+/! = button_to "Destroy this user", @user, method: :delete 
+

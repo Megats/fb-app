@@ -1,0 +1,19 @@
+p style="color: green"
+    = notice 
+
+
+h2
+    | List of Account
+hr
+| Current Account Exist:
+div id = "users"
+    - @users.each do |user|
+        = image_tag 'profile2.jpg', :size => "100x90" 
+        = user.user_name 
+        div class="center"
+            = link_to '<button type="button" class="btn btn-info" float="right">View this user</button>'.html_safe , user
+            
+        br
+        hr
+
+= link_to '<button type="button" class="btn btn-info">New User</button>'.html_safe , new_user_path

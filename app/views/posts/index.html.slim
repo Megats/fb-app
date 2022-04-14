@@ -1,0 +1,43 @@
+p style="color: green"
+    = notice 
+
+div class="card"
+    div class="card-header"
+        strong
+            | Post Something
+    
+    div class="card-body"
+        h5 class="card-title"
+            = @owner.user_name
+        p class="card-text"
+            | Share your thought!
+    = link_to '<button type="button" class="btn btn-primary">New Post</button>'.html_safe , new_user_post_path(@userid)
+  
+br
+
+h1
+    | Posts
+br
+- @posts.each do |post| 
+    div class="card"
+        div class="card-header"
+            p style="color:blue;"
+                = post.user_name
+      
+        div class="card-body"
+            blockquote class="blockquote mb-0"
+                p
+                    = post.post_content 
+                    - c = Post.find(post.id)
+                    footer class="blockquote-footer"
+                        | Post at 
+                        = c.created_at_for_database
+                        cite title="Source Title"
+                    
+            - @userid == post.user_id
+            p    
+                = link_to "Edit this post", post 
+            
+            
+            = link_to '<button type="button" class="btn btn-primary">View this Post</button>'.html_safe , new_user_post_comment_path(@userid,post.id) 
+        br

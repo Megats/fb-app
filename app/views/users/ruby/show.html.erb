@@ -1,0 +1,15 @@
+<p style="color: green"><%= notice %></p>
+
+<div class="card w-50">
+  <h5 class="card-header">Account Detail</h5>
+  <div class="card-body">
+    <h5 class="card-title">Name: <%= @user.user_name %> </h5>
+    <p class="card-text">User ID: <%= @user.id %> </p>
+  </div>  
+</div>
+<br>
+<%= link_to 'Edit', edit_user_path(@user), class: "btn btn-primary"%>
+<%= link_to 'Back', users_path, class: "btn btn-primary"%>
+<%= link_to 'View Post', user_posts_path(@user.id), class: "btn btn-primary"%>
+
+

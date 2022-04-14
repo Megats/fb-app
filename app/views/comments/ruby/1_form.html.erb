@@ -1,0 +1,48 @@
+<% frame_id = dom_id(comment, "name_turbo_frame") %>
+<%= form_with(model: comment, url:[@post,@comment], id: dom_id(comment)) do |form| %>
+  <% if comment.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(comment.errors.count, "error") %> prohibited this comment from being saved:</h2>
+
+      <ul>
+        <% comment.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <% if comment.new_record? %>
+  <div>
+    <%= form.hidden_field :user_id, value: @userid %>
+  </div>
+
+  <div>
+    <%= form.hidden_field :post_id, value: @postid %>
+  </div>
+
+  <div>
+  <%= @owner.user_name %> <br>
+  <%= form.text_field :comment_content, style: 'border-radius: 10px', :size => 40, placeholder: " Write a reply..." %>
+  </div>
+<br>
+
+  <% else %>
+    
+      <%= turbo_frame_tag frame_id do %>
+      <div class="card">  <%= @owner.user_name %> :
+          <div center = "center">
+            <div class="card-body mb-2">
+              <%= form.text_field :comment_content, placeholder: "What's on your mind?", :cols => 80, :rows => 10  %>
+              <%= link_to "Back", new_user_post_comment_path(@userid,@postid,@comment) %>          
+
+            </div>
+          </div>
+        </div>
+      <% end %>
+
+  <% end %>    <div>
+  
+<%= form.submit "Post" %>
+  </div><br>
+<% end %>
