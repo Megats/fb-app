@@ -6,7 +6,14 @@ class CommentsController < ApplicationController
     @postid = params[:post_id]
     @userid = params[:user_id]
     @post = Post.find(@postid)
-    @owner = User.find(@userid)
+
+    if current_user
+      @owner = User.find(current_user)
+
+    else
+        @owner = Admin.find(current_admin)
+    end    
+
     @display = User.find(@user_id)
 
   end
@@ -19,11 +26,19 @@ class CommentsController < ApplicationController
   def new
     @userid = params[:user_id]
     @postid = params[:post_id]
-    @owner = User.find(@userid)
+    
+    if current_user
+      @owner = User.find(current_user.id)
+
+    else
+      @owner = Admin.find(current_admin.id)
+    end    
+    
     @post = Post.find(@postid)
 
     @comments = @post.comments
     # @comments = User.select("users.user_name, comments.comment_content").joins(:comments).where("post_id = ?", @postid)
+    
     @poster = User.select("users.user_name").joins(:posts).where("posts.id = ?", @postid)
     @postowner = @poster.first
     @comment = Comment.new

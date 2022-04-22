@@ -1,25 +1,13 @@
 <p style="color: green"><%= notice %></p>
-<h1>Posts</h1>
+<h1>Chart</h1>
 <br>
+<div>
+      <h2>Post Frequency</h2>
+            <%= line_chart ActiveChart.group(:user_id).group_by_month(:post_activetime).count %>
+<br>
+      <h2>Comment Frequency</h2>
+            <%= line_chart ActiveChart.group(:user_id).group_by_month(:comment_activetime).count %>
 
-    <% @name.each do |post| %>
-      <div class="card">
-      <div class="card-header">
-      <p style="color:blue;"><%= post.user_name %></p>
-  </div>
-  <div class="card-body">
-    <blockquote class="blockquote mb-0">
-      <p><%= post.post_content %></p>
-      <footer class="blockquote-footer">Post at 5/4/2022 <cite title="Source Title"></cite></footer>
-    </blockquote>
-    <p>
-    </p>
-  </div>
-</div>
-
-
-    <br>
-  <% end %>
-</div>
+<br>
 
 

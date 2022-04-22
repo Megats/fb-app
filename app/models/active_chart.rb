@@ -1,0 +1,2 @@
+class ActiveChart < ApplicationRecord
+end

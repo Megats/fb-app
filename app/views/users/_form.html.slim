@@ -1,10 +1,19 @@
-= simple_form_for user do |f|
+div class="dropdown-menu"
+= simple_form_for user, html: { class: "px-4 py-3"} do |f|
+    
+        = f.error_notification
+        = f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present?
 
-    = f.error_notification
-    = f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present?
-  
-    br
-    = f.input :user_name, :input_html => { :maxlength => 40, :style=> 'width: 350px'} 
-    = f.button :submit, class: "btn btn-info"
+        center
+            div class="card" style="width: 30rem; height: 20rem"
+                div class="card-body"    
+                    = f.input :user_name, :input_html => { :maxlength => 40, :style=> 'width: 350px', :class=>"form-control", :placeholder=>"Samad Ali"} 
+                    = f.submit 'Update', class: "btn btn-info"
+
+                br
+                    a class="dropdown-item" href="/users"
+                        | Already have account? Log in
 
 
+
+    

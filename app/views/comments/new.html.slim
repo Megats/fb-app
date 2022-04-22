@@ -17,20 +17,21 @@ br
                 |  Likes
 
                 - like = Like.find_by(likeable: @post, user:@userid)
-                - if like.nil?
-                    = form_with url: post_likes_path(@post,@like), method: :post do |form| 
-                        = form.hidden_field :likeable_id, value: @post.id 
-                        = form.hidden_field :likeable_type, value: "Post" 
-                        = form.hidden_field :user_id, value: @userid           
-                        = form.submit "Like", class:"btn btn-primary" 
-                        
-   
-                - else            
-                    - @like = Like.find_by(likeable: @post, user:@userid)
-                    = form_with url: post_like_path(@post,@like), method: :delete do |form| 
-                        = form.hidden_field :likeable_id, value: @like.id 
-                        = form.hidden_field :user_id, value: @userid 
-                        = form.button "Unlike", class:"btn btn-primary" ,formmethod: :delete, data: { confirm: "Are you sure?" } 
+                - if current_user
+                    - if like.nil?
+                        = form_with url: post_likes_path(@post,@like), method: :post do |form| 
+                            = form.hidden_field :likeable_id, value: @post.id 
+                            = form.hidden_field :likeable_type, value: "Post" 
+                            = form.hidden_field :user_id, value: @userid           
+                            = form.submit "Like", class:"btn btn-primary" 
+                            
+    
+                    - else            
+                        - @like = Like.find_by(likeable: @post, user:@userid)
+                        = form_with url: post_like_path(@post,@like), method: :delete do |form| 
+                            = form.hidden_field :likeable_id, value: @like.id 
+                            = form.hidden_field :user_id, value: @userid 
+                            = form.button "Unlike", class:"btn btn-primary" ,formmethod: :delete, data: { confirm: "Are you sure?" } 
                         
 br
 
@@ -49,35 +50,42 @@ br
                             div class="card"  
                                 = comment.user_name
                                 | :
-
+                        
                                 div center = "center"
                                     div class="float-right"
                     
                                     div class="card-body mb-2"
                                         div class="d-flex justify-content-between"
                                             | -
-                                            = comment.comment_content 
-                                            = link_to "Edit this comment", edit_user_post_comment_path(comment.user_id,comment.post_id,comment)          
+                                            = comment.comment_content
+
+                                            -if current_user
+                                                - if current_user.id == comment.user_id 
+                                                    = link_to "Edit this comment", edit_user_post_comment_path(comment.user_id,comment.post_id,comment)          
+                                                    = button_to "Destroy this comment", comment, method: :delete, class:"btn btn-danger"
+                                                
                                             = button_to "Destroy this comment", comment, method: :delete, class:"btn btn-danger"
 
-                                - like = Like.find_by(likeable: comment, user:@userid) 
-                                - if like.nil? 
-                                    = form_with url: comment_likes_path(comment.id,like), method: :comment do |form| 
-                                        = form.hidden_field :likeable_id, value: comment.id 
-                                        = form.hidden_field :likeable_type, value: "Comment" 
-                                        = form.hidden_field :user_id, value: @userid           
-                                        = form.submit "Like", class:"btn btn-primary"
-                                        '
-                                        = comment.likes.count
-                                        '
-                                        | Likes
 
-                                    
-                                - else             
-                                    = form_with url: comment_like_path(comment.id,like), method: :delete do |form| 
-                                        = form.hidden_field :likeable_id, value: like.id 
-                                        = form.hidden_field :user_id, value: @userid 
-                                        = form.button "Unlike", class:"btn btn-primary" ,formmethod: :delete, data: { confirm: "Are you sure?" }
+                                - like = Like.find_by(likeable: comment, user:@userid)
+                                - if current_user 
+                                    - if like.nil? 
+                                        = form_with url: comment_likes_path(comment.id,like), method: :comment do |form| 
+                                            = form.hidden_field :likeable_id, value: comment.id 
+                                            = form.hidden_field :likeable_type, value: "Comment" 
+                                            = form.hidden_field :user_id, value: @userid           
+                                            = form.submit "Like", class:"btn btn-primary"
+                                            '
+                                            = comment.likes.count
+                                            '
+                                            | Likes
+
+                                        
+                                    - else             
+                                        = form_with url: comment_like_path(comment.id,like), method: :delete do |form| 
+                                            = form.hidden_field :likeable_id, value: like.id 
+                                            = form.hidden_field :user_id, value: @userid 
+                                            = form.button "Unlike", class:"btn btn-primary" ,formmethod: :delete, data: { confirm: "Are you sure?" }
                                         '
                                         = comment.likes.count
                                         '
@@ -87,9 +95,14 @@ br
                         br
 
 br
-= render "form", comment: @comment 
+- if current_user
+    = render "form", comment: @comment 
 br
-= link_to '<button type="button" class="btn btn-primary">Back to Post</button>'.html_safe , user_posts_path(@userid) 
+    - if current_user
+        = link_to '<button type="button" class="btn btn-primary">Back to Post</button>'.html_safe , user_posts_path(@userid) 
+    else
+        = link_to '<button type="button" class="btn btn-primary">Back</button>'.html_safe , users_path
+
 br
 br
 

@@ -1,6 +1,3 @@
-p style="color: green"
-    = notice 
-
 div class="card"
     div class="card-header"
         strong
@@ -8,10 +5,10 @@ div class="card"
     
     div class="card-body"
         h5 class="card-title"
-            = @owner.user_name
+            = current_user.user_name
         p class="card-text"
             | Share your thought!
-    = link_to '<button type="button" class="btn btn-primary">New Post</button>'.html_safe , new_user_post_path(@userid)
+    = link_to '<button type="button" class="btn btn-primary">New Post</button>'.html_safe , new_user_post_path(current_user)
   
 br
 
@@ -39,5 +36,5 @@ br
                 = link_to "Edit this post", post 
             
             
-            = link_to '<button type="button" class="btn btn-primary">View this Post</button>'.html_safe , new_user_post_comment_path(@userid,post.id) 
+            = link_to '<button type="button" class="btn btn-primary">View this Post</button>'.html_safe , new_user_post_comment_path(current_user,post.id) 
         br

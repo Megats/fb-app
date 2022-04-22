@@ -1,0 +1,10 @@
+p style="color: green" = notice
+
+== render @active_chart
+
+div
+  => link_to "Edit this active chart", edit_active_chart_path(@active_chart)
+  '|
+  =< link_to "Back to active charts", active_charts_path
+
+  = button_to "Destroy this active chart", @active_chart, method: :delete

@@ -8,9 +8,7 @@
         = f.hidden_field :user_id, value: @userid 
                                 
         = f.hidden_field :post_id, value: @postid 
-                                
-        = @owner.user_name
-            
+                                            
         = f.input :comment_content, label:false , placeholder: "Write a reply...", :input_html => { :maxlength => 40, :style=> 'width: 350px'}
 
 

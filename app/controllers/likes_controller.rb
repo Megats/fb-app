@@ -1,5 +1,6 @@
 class LikesController < ApplicationController
     before_action :set_user
+    skip_before_action :verify_authenticity_token
 
     def new
         @like = Like.new
@@ -14,8 +15,8 @@ class LikesController < ApplicationController
         
 
         else
-        comment = Comment.find(params[:likeable_id])
-        Like.create(likeable: comment, user: @user)
+            comment = Comment.find(params[:likeable_id])
+            Like.create(likeable: comment, user: @user)
         end
 
         redirect_back(fallback_location: root_path)

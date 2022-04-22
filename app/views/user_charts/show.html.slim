@@ -1,0 +1,10 @@
+p style="color: green" = notice
+
+== render @user_chart
+
+div
+  => link_to "Edit this user chart", edit_user_chart_path(@user_chart)
+  '|
+  =< link_to "Back to user charts", user_charts_path
+
+  = button_to "Destroy this user chart", @user_chart, method: :delete

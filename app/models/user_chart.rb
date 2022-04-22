@@ -1,0 +1,2 @@
+class UserChart < ApplicationRecord
+end

@@ -1,0 +1,53 @@
+<h2>List of Account</h2>
+<hr>
+
+<table id="users-datatable" data-source="<%= users_path(format: :json) %>">
+  <thead>
+    <tr>
+      <th>User ID</th>
+      <th>Username</th>
+      <th>Email</th>
+      <th>Created at</th>
+    </tr>
+  </thead>
+    <tbody>
+    </tbody>
+</table>
+
+<script type="text/javascript" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript">
+jQuery(document).ready(function() {
+  $('#users-datatable').dataTable({
+    "processing": true,
+    "serverSide": true,
+    "ajax": {
+      "url": $('#users-datatable').data('source')
+    },
+    "pagingType": "full_numbers",
+    "columns": [
+      {"data": "id"},
+      {"data": "user_name"},
+      {"data": "created_at"},
+      {"data": "email"}
+    ]
+  });
+});
+</script>
+
+<br><br><br>
+
+<h2>Post history</h2>
+<hr>
+<div id="users">
+  <% @posts.each do |post| %>
+    <%= image_tag 'profile2.jpg', :size => "100x90" %>
+    <%= post.user.user_name %><br>
+    - <%= post.post_content %><br>
+      <%= link_to '<button type="button" class="btn btn-primary float-right">View this Post</button>'.html_safe , new_admin_post_comment_path(current_admin,post.id) %>
+      Post at:
+    <%= post.created_at_for_database %>
+    <br>
+    <%= button_to "Delete this post", @post, method: :delete, class:"btn btn-danger"  %>
+    <hr>
+  <% end %>
+</div>

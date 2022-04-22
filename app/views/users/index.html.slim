@@ -1,19 +1,32 @@
-p style="color: green"
-    = notice 
+javascript:
+    <script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
 
+- if current_user
+    | Welcome 
+    = current_user.email 
 
 h2
     | List of Account
 hr
 | Current Account Exist:
-div id = "users"
-    - @users.each do |user|
-        = image_tag 'profile2.jpg', :size => "100x90" 
-        = user.user_name 
-        div class="center"
-            = link_to '<button type="button" class="btn btn-info" float="right">View this user</button>'.html_safe , user
-            
-        br
-        hr
+table id = "users"
+    br
+        tr
+            th
+                | Username
+        tr  
+            td
+                - @users.each do |user|
+                    =user.user_name     
+                    br
 
-= link_to '<button type="button" class="btn btn-info">New User</button>'.html_safe , new_user_path
+
+        
+
+javascript:
+    $(document).ready( function () { 
+        $('#users').DataTable();} )
+
+
+
+    

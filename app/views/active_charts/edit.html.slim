@@ -1,0 +1,10 @@
+h1 Editing active chart
+
+== render "form", active_chart: @active_chart
+
+br
+
+div
+  => link_to "Show this active chart", @active_chart
+  '|
+  =< link_to "Back to active charts", active_charts_path

@@ -1,0 +1,10 @@
+h1 Editing user chart
+
+== render "form", user_chart: @user_chart
+
+br
+
+div
+  => link_to "Show this user chart", @user_chart
+  '|
+  =< link_to "Back to user charts", user_charts_path

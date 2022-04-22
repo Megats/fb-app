@@ -1,12 +1,12 @@
 class PostsController < ApplicationController
   before_action :set_post, only: %i[edit update destroy ]
+  before_action :authenticate_user!
+  # before_action :authenticate_admin!
 
   # GET /posts or /posts.json
   def index
     @userid = params[:user_id]
-    @postid = params[:post_id]
-    @owner = User.find(@userid)
-    
+    @postid = params[:post_id]    
     #@posts = Post.all.where("user_id = ?", @userid)
     #@posts = @owner.posts.order(created_at: :desc)
     @posts = Post.joins(:user).select('users.user_name, post_content, posts.id, posts.user_id').order(created_at: :desc)

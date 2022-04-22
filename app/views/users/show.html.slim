@@ -11,14 +11,17 @@ div class="card w-50"
             p class="card-text"
                 | User ID: 
                 = @user.id
+        br
+            | Email:
+            '
+            = @user.email
   
 br
-= link_to 'Edit', edit_user_path(@user), class: "btn btn-primary"
-'
-= link_to 'Back', users_path, class: "btn btn-primary"
-'
-= link_to 'View Post', user_posts_path(@user.id), class: "btn btn-primary"
+    = link_to "Back to post", user_posts_path(current_user), class: "btn btn-primary" 
+    =< link_to 'Edit', edit_user_path(@user), class: "btn btn-primary"
 br
+    - if current_admin
+        = button_to "Destroy this user", @user, method: :delete, class: "btn btn-danger"
 
-/! = button_to "Destroy this user", @user, method: :delete 
+
 

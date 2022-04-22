@@ -1,0 +1,11 @@
+p style="color: green" = notice
+
+h1 User charts
+
+#user_charts
+  - @user_charts.each do |user_chart|
+    == render user_chart
+    p
+      = link_to "Show this user chart", user_chart
+
+= link_to "New user chart", new_user_chart_path

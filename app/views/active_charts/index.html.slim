@@ -1,0 +1,11 @@
+p style="color: green" = notice
+
+h1 Active charts
+
+#active_charts
+  - @active_charts.each do |active_chart|
+    == render active_chart
+    p
+      = link_to "Show this active chart", active_chart
+
+= link_to "New active chart", new_active_chart_path
